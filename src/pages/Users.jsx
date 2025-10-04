@@ -195,7 +195,7 @@ function Users() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              {/* <TableHead>ID</TableHead> */}
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
@@ -205,7 +205,7 @@ function Users() {
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.user_id}>
-                <TableCell>{user.user_id}</TableCell>
+                {/* <TableCell>{user.user_id}</TableCell> */}
                 <TableCell>{user.full_name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
