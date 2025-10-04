@@ -102,6 +102,20 @@ function BorrowRecords() {
   };
 
   const handleBorrow = async () => {
+    // Add validation
+    if (!formData.user_name.trim()) {
+      toast.error('User Name is required.');
+      return;
+    }
+    if (!formData.book_id) {
+      toast.error('Please select a book.');
+      return;
+    }
+    if (!formData.due_date) {
+      toast.error('Due Date is required.');
+      return;
+    }
+
     setBorrowing(true);
     const token = localStorage.getItem('token');
     try {
@@ -199,10 +213,18 @@ function BorrowRecords() {
                 }
               />
             </div>
-            <Button onClick={handleBorrow} disabled={borrowing}>
+            <Button
+              onClick={handleBorrow}
+              disabled={
+                borrowing ||
+                !formData.user_name.trim() ||
+                !formData.book_id ||
+                !formData.due_date
+              }
+            >
               {borrowing ? (
                 <>
-                  <Loader2 className='w-4 h-4 animate-spin mr-2' />
+                  {/* <Loader2 className='w-4 h-4 animate-spin mr-2' /> */}
                   Loading...
                 </>
               ) : (

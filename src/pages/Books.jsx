@@ -81,6 +81,26 @@ function Books() {
   };
 
   const handleAddBook = async () => {
+    if (!formData.title.trim()) {
+      toast.error('Title is required.');
+      return;
+    }
+    if (!formData.author.trim()) {
+      toast.error('Author is required.');
+      return;
+    }
+    if (!String(formData.published_year).trim()) {
+      toast.error('Published Year is required.');
+      return;
+    }
+    if (!formData.isbn.trim()) {
+      toast.error('ISBN is required.');
+      return;
+    }
+    if (formData.copies_available < 0) {
+      toast.error('Copies Available must be 0 or more.');
+      return;
+    }
     setAdding(true);
     const token = localStorage.getItem('token');
     try {
@@ -127,7 +147,7 @@ function Books() {
     setFormData({
       title: book.title,
       author: book.author,
-      published_year: book.published_year,
+      published_year: String(book.published_year),
       isbn: book.isbn,
       copies_available: book.copies_available,
     });
@@ -498,12 +518,19 @@ function Books() {
               </button>
               <button
                 onClick={handleAddBook}
-                disabled={adding}
+                disabled={
+                  adding ||
+                  !formData.title.trim() ||
+                  !formData.author.trim() ||
+                  !String(formData.published_year).trim() ||
+                  !formData.isbn.trim() ||
+                  formData.copies_available < 0
+                }
                 className='flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed'
               >
                 {adding ? (
                   <>
-                    <Loader2 className='w-4 h-4 animate-spin mr-2' />
+                    {/* <Loader2 className='w-4 h-4 animate-spin mr-2' /> */}
                     {isEditing ? 'Updating...' : 'Adding...'}
                   </>
                 ) : isEditing ? (
