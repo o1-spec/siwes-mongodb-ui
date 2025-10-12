@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,17 +12,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'; 
+} from '@/components/ui/dialog';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'sonner';
-import { ArrowLeft, User, Lock, Mail, Shield, Edit, Key } from 'lucide-react';
+import { ArrowLeft, User, Mail, Shield, Edit, Key } from 'lucide-react';
 import API_BASE_URL from '@/api';
+import { useAuth } from '@/hooks/useAuth';
 
 function Profile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
-  const [isEditing, setIsEditing] = useState(false); 
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); 
+  const { setUser } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+  const [user, setUserLocal] = useState({});
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -32,7 +35,8 @@ function Profile() {
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-    setUser(storedUser);
+    setUserLocal(storedUser); 
+    setUser(storedUser); 
     setFormData({
       full_name: storedUser.full_name || '',
       email: storedUser.email || '',
@@ -45,7 +49,7 @@ function Profile() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-       const res = await fetch(`${API_BASE_URL}/users/me`, { 
+      const res = await fetch(`${API_BASE_URL}/users/me`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -58,6 +62,7 @@ function Profile() {
       });
       const updatedUser = await res.json();
       localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUserLocal(updatedUser);
       setUser(updatedUser);
       setIsEditing(false);
       toast.success('Profile updated successfully!');
@@ -267,7 +272,9 @@ function Profile() {
                     </DialogHeader>
                     <div className='space-y-4'>
                       <div>
-                        <Label htmlFor='newPassword' className='pb-1'>New Password</Label>
+                        <Label htmlFor='newPassword' className='pb-1'>
+                          New Password
+                        </Label>
                         <Input
                           id='newPassword'
                           type='password'

@@ -24,22 +24,25 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 function Layout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false); 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [isMobile, setIsMobile] = useState(false); 
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout, user } = useAuth();
 
   useEffect(() => {
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       if (!mobile) {
-        setSidebarOpen(true); 
+        setSidebarOpen(true);
       } else {
-        setSidebarOpen(false); 
+        setSidebarOpen(false);
       }
     };
 
@@ -56,16 +59,15 @@ function Layout({ children }) {
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    toast.success('Logged out successfully!'); 
+    logout();
     setTimeout(() => {
       navigate('/login');
       setIsLoggingOut(false);
     }, 500);
   };
 
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const userInitials = user.full_name
+  const userInitials = user?.full_name
     ? user.full_name
         .split(' ')
         .map((n) => n[0])

@@ -14,37 +14,10 @@ import Login from './pages/Login';
 import { ToastProvider } from './components/ui/toast';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
-import API_BASE_URL from './api';
-import { useEffect, useState } from 'react';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      // Validate token by fetching user data
-      fetch(`${API_BASE_URL}/users/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => {
-          if (res.ok) {
-            setIsAuthenticated(true);
-          } else {
-            throw new Error('Invalid token');
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setIsAuthenticated(false);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, []);
+  const { isAuthenticated, loading } = useAuth(); 
 
   if (loading) {
     return (
