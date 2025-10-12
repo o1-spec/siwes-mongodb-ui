@@ -32,11 +32,13 @@ function Profile() {
     confirmPassword: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-    setUserLocal(storedUser); 
-    setUser(storedUser); 
+    setUserLocal(storedUser);
+    setUser(storedUser);
     setFormData({
       full_name: storedUser.full_name || '',
       email: storedUser.email || '',
@@ -275,35 +277,65 @@ function Profile() {
                         <Label htmlFor='newPassword' className='pb-1'>
                           New Password
                         </Label>
-                        <Input
-                          id='newPassword'
-                          type='password'
-                          placeholder='Enter new password'
-                          value={formData.newPassword}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              newPassword: e.target.value,
-                            })
-                          }
-                        />
+                        <div className='relative'>
+                          <Input
+                            id='newPassword'
+                            type={showNewPassword ? 'text' : 'password'}
+                            placeholder='Enter new password'
+                            value={formData.newPassword}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                newPassword: e.target.value,
+                              })
+                            }
+                            className='pr-10' 
+                          />
+                          <button
+                            type='button'
+                            onClick={() => setShowNewPassword(!showNewPassword)}
+                            className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+                          >
+                            {showNewPassword ? (
+                              <EyeOff className='w-4 h-4' />
+                            ) : (
+                              <Eye className='w-4 h-4' />
+                            )}
+                          </button>
+                        </div>
                       </div>
                       <div>
                         <Label htmlFor='confirmPassword' className='pb-1'>
                           Confirm Password
                         </Label>
-                        <Input
-                          id='confirmPassword'
-                          type='password'
-                          placeholder='Confirm new password'
-                          value={formData.confirmPassword}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              confirmPassword: e.target.value,
-                            })
-                          }
-                        />
+                        <div className='relative'>
+                          <Input
+                            id='confirmPassword'
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            placeholder='Confirm new password'
+                            value={formData.confirmPassword}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                confirmPassword: e.target.value,
+                              })
+                            }
+                            className='pr-10'
+                          />
+                          <button
+                            type='button'
+                            onClick={() =>
+                              setShowConfirmPassword(!showConfirmPassword)
+                            }
+                            className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff className='w-4 h-4' />
+                            ) : (
+                              <Eye className='w-4 h-4' />
+                            )}
+                          </button>
+                        </div>
                       </div>
                       <div className='flex justify-end space-x-2'>
                         <Button
