@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'sonner';
-import { ArrowLeft, User, Mail, Shield, Edit, Key } from 'lucide-react';
+import { ArrowLeft, User, Mail, Shield, Edit, Key, EyeOff, Eye } from 'lucide-react';
 import API_BASE_URL from '@/api';
 import { useAuth } from '@/hooks/useAuth';
 
