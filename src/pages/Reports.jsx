@@ -118,14 +118,13 @@ function Reports() {
                 <TableBody>
                   {reports.activeUsers.map((user) => (
                     <TableRow key={user.user_name}>
-                      <TableCell>{user.user_name}</TableCell> 
+                      <TableCell>{user.user_name}</TableCell>
                       <TableCell>{user.borrow_count}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             )}
-
           </CardContent>
         </Card>
       </div>
@@ -150,17 +149,23 @@ function Reports() {
                   <TableHead>Book</TableHead>
                   <TableHead>Due Date</TableHead>
                   <TableHead>Overdue Days</TableHead>
-                  {/* <TableHead>Fine ($)</TableHead> */}
+                  <TableHead>Fine (₦)</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {reports.overdue.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{item.full_name}</TableCell>
+                    <TableCell>{item.user_name}</TableCell>
                     <TableCell>{item.title}</TableCell>
-                    <TableCell>{item.due_date}</TableCell>
+                    <TableCell>
+                      {new Date(item.due_date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })}
+                    </TableCell>
                     <TableCell>{item.overdue_days}</TableCell>
-                    {/* <TableCell>{item.fine}</TableCell> */}
+                    <TableCell>{item.fine}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
